@@ -1,4 +1,4 @@
-# NovaMind — Neural Network from Scratch
+# Neural Network from Scratch
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white)
 ![Built with NumPy](https://img.shields.io/badge/Built%20with-NumPy%20Only-4c1)
@@ -11,7 +11,7 @@ Trained on MNIST (60k images). Achieves **97.91% test accuracy**.
 
 ---
 
-## Results
+## Performance
 
 | Metric | Value |
 |---|---|
@@ -41,7 +41,7 @@ Weights initialized with **Xavier initialization**: `W = randn * sqrt(1 / input_
 
 ---
 
-## What's Built from Scratch
+## Built from Scratch
 
 - **Forward pass** — matrix multiplication, bias addition, activation functions
 - **Backpropagation** — full chain rule implementation through every layer
@@ -65,6 +65,7 @@ Weights initialized with **Xavier initialization**: `W = randn * sqrt(1 / input_
 
 ### Prediction Grid
 ![Prediction Grid](plots/prediction_grid.png)
+
 ---
 
 ## Project Structure
@@ -86,7 +87,7 @@ novamind/
 
 ---
 
-## How to Run
+## Running the Project
 
 **Install dependencies:**
 ```bash
@@ -124,10 +125,10 @@ python visualize.py
 
 ---
 
-## Key Design Decisions
+## Design Decisions
 
-**Softmax handles the backward pass for CrossEntropy.** The combined gradient of Softmax + CrossEntropy simplifies to `(predictions - y_true) / batch_size`, so `CrossEntropyLoss` has no `backward` method — Softmax absorbs it entirely.
+**Softmax owns the CrossEntropy backward pass.** The combined gradient of Softmax + CrossEntropy collapses to `(predictions - y_true) / batch_size`, so `CrossEntropyLoss` has no `backward` method — Softmax absorbs it entirely.
 
-**Biases are not L2 regularized.** Regularizing biases provides no benefit and can hurt convergence. Only weights are penalized.
+**Biases are excluded from L2 regularization.** Penalizing biases yields no benefit and can actively hurt convergence. Only weights receive the decay term.
 
-**Weight saving is fully dynamic.** The training loop finds Dense layers using `hasattr(layer, 'W')` rather than hardcoding layer indices, so the architecture can be changed without breaking the save/load logic.
+**Weight saving is architecture-agnostic.** The training loop identifies Dense layers via `hasattr(layer, 'W')` rather than hardcoded indices, so the architecture can be restructured without breaking save/load logic.
